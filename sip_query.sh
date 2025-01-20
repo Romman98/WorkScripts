@@ -38,9 +38,7 @@ ip_signaling_peer=$(cat output.txt | grep Ip_Signaling_Peer_Group_Id | awk -F': 
 ip_address=$(./expect.sh "show Ip_Signaling_Peer_Group_Data Ip_Signaling_Peer_Group_Id $ip_signaling_peer Sequence_Number 0" | grep "Ip_Address" |  awk -F': ' '{print $2}' | sed 's/[^[:print:]]//g')
 COS1=$(cat output.txt  | grep Class_Of_Service_Id | awk -F': ' '{print $2}')
 COS2=$(./expect.sh "show Trunkgroup Trunkgroup_id $trunk_group Gateway_Id AMM2GSX01" | grep Class_Of_Service_Id | awk -F': ' '{print $2}')
-ddi_range=$(cat output.txt | grep Ddi_Range_Profile_Id | awk -F': ' '{print $2}')
-./expect.sh "find DDI_Range_Profile_Data Ddi_Range_Profile_Id $ddi_range" > output.txt
-from_number=($(cat output.txt | grep "From"| sed 's/[^[:print:]]//g' | awk -F': ' '{print $2}'))
+
 
 for item in ${from_number[@]};
 do 
@@ -81,6 +79,9 @@ printf "%-18s %s\n" "COS at AMM2GSX02: " "$COS2"
                 ;;
 
 "DDI_Range")
+        ddi_range=$(cat output.txt | grep Ddi_Range_Profile_Id | awk -F': ' '{print $2}')
+        ./expect.sh "find DDI_Range_Profile_Data Ddi_Range_Profile_Id $ddi_range" > output.txt
+        from_number=($(cat output.txt | grep "From"| sed 's/[^[:print:]]//g' | awk -F': ' '{print $2}'))
         this_range=$(range ${#from_number[@]})
         for i in ${this_range[@]}; do
                 echo "From: ${from_number[$i]}  To: ${to_number[$i]}"
