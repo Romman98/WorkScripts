@@ -11,8 +11,7 @@ function date_adder {
     done
 }
 
-CDR_DIRECTORY="/export/home/dsi/AMM1GSX01/archive"
-# CDR_DIRECTORY="/mnt/c/Users/ahmad.romman/Desktop/IMS_Work_Folder/Projects/CDR_reader"
+CDR_DIRECTORY=""
 date_to_return="$3"
 
 date_adder "$date_to_return"
