@@ -5,37 +5,37 @@
 ### Script Parameters ###
 date_today=$(date +%Y%m%d)
 host_name=$(hostname)
-output_log="/export/home/HealthCheck/EMS/$date_today/${host_name}_Health_Check_output.txt"
-output_data="/export/home/HealthCheck/EMS/status.output"
-NOK_log="/export/home/HealthCheck/EMS/$date_today/NOK_log.txt"
+output_log="$date_today/${host_name}_Health_Check_output.txt"
+output_data="/export/home/HealthCheck/status.output"
+NOK_log="/export/home/HealthCheck/$date_today/NOK_log.txt"
 
-if [[ "$host_name" -eq "amm5ems01" ]]; then
-        node="EMS05"
-elif [[ "$host_name" -eq "amm6ems01" ]]; then
-        node="EMS06"
+if [[ "$host_name" -eq "" ]]; then
+        node=""
+elif [[ "$host_name" -eq "" ]]; then
+        node=""
 fi
 
-if [ ! -d /export/home/HealthCheck/EMS/$date_today ]; then
-    mkdir -p /export/home/HealthCheck/EMS/$date_today
+if [ ! -d /export/home/HealthCheck/$date_today ]; then
+    mkdir -p /export/home/HealthCheck/$date_today
 fi
 
-if [ ! -d /export/home/HealthCheck/PSX/$date_today ]; then
-    mkdir -p /export/home/HealthCheck/PSX/$date_today
+if [ ! -d /export/home/HealthCheck/$date_today ]; then
+    mkdir -p /export/home/HealthCheck//$date_today
 fi
 
-# if [ ! -d /export/home/HealthCheck/DSI/$date_today ]; then
-#     mkdir /export/home/HealthCheck/DSI/$date_today
+# if [ ! -d /export/home/HealthCheck/$date_today ]; then
+#     mkdir /export/home/HealthCheck/$date_today
 # fi
 
-if [ ! -d /export/home/HealthCheck/GSX/$date_today ]; then
-    mkdir -p /export/home/HealthCheck/GSX/$date_today
+if [ ! -d /export/home/HealthCheck/$date_today ]; then
+    mkdir -p /export/home/HealthCheck/$date_today
 fi
 
 >$output_log         # Empty the log
 exec >/dev/null 2>&1 # Suppress all outputs
 
-### Sonus EMS Status ###
-sudo -u insight /opt/sonus/ems/emsMgmt status > "$output_data"
+###   Status ###
+sudo -u insight ./emsMgmt status > "$output_data"
 
 #### Apache Proxy ####
 Apache_status=$(cat "$output_data" | grep "Apache Proxy" | grep 'Running'| wc -l)
